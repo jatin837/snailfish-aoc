@@ -6,6 +6,12 @@ class Node:
         self.prev = prev
 
 
+def serialize(node):
+    if isinstance(node.value, int):
+        return node.value
+    return [serialize(node.left), serialize(node.right)]
+
+
 def parse(fish):
     root = Node()
     if isinstance(fish, int):
@@ -32,12 +38,13 @@ def add(a, b):
     return root
 
 def reduce(root):
-    print('promise to solve', root)
+    pass
 
 if __name__ == "__main__":
     first, inp = read_input()
     first = parse(first)
     for i in inp:
         first = add(first, parse(i))
+        print(serialize(first))
         print(first)
         reduce(first)
