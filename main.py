@@ -38,13 +38,24 @@ def add(a, b):
     return root
 
 def reduce(root):
-    pass
+    stack = []
+    stack.append((root, 0))
+    while stack:
+        n, d = stack.pop()
+        if n.value == None:
+            stack.append((n.right, d+1))
+            stack.append((n.left, d+1))
+        if isinstance(n.value, int) and d >=4:
+            explode()
+
+
+def explode():
+    print('will explode')
 
 if __name__ == "__main__":
     first, inp = read_input()
     first = parse(first)
     for i in inp:
         first = add(first, parse(i))
-        print(serialize(first))
-        print(first)
         reduce(first)
+        print(serialize(first))
