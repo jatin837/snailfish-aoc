@@ -1,21 +1,43 @@
-# snailfishes = ['[1,1]','[2,2]', '[3,3]', '[4,4]']
-from collections import deque
-
-snailfishes = ['[[[[4,3],4],4],[7,[[8,4],9]]]', '[1,1]']
-initial_fish = snailfishes[0]
-
-stack = list()
-
-for c in initial_fish:
-    if c == '[':
-        stack.append(c)
-    if c == ']':
-        stack.pop()
+class Node:
+    def __init__(self, value=None, left=None, right=None, prev=None):
+        self.value = value
+        self.left = left
+        self.right = right
+        self.prev = prev
 
 
-for fish in snailfishes[1:]:
-    fish = '[' + initial_fish + ','+ fish + ']'
-    initial_fish = fish
-    print(fish)
+def parse(fish):
+    root = Node()
+    if isinstance(fish, int):
+        root.value = fish
+        return root
+    
+    root.left = parse(fish[0])
+    root.right = parse(fish[1])
+    root.left.prev = root
+    root.right.prev = root
 
-split = lambda x : [x//2, x - x//2]
+    return root
+
+
+def read_input(location='./input'):
+    with open(location, 'r') as f:
+        inp=(eval(i.strip()) for i in f.readlines())
+    return next(inp), inp
+
+def add(a, b):
+    root = Node()
+    root.left = a
+    root.right = b
+    return root
+
+def reduce(root):
+    print('promise to solve', root)
+
+if __name__ == "__main__":
+    first, inp = read_input()
+    first = parse(first)
+    for i in inp:
+        first = add(first, parse(i))
+        print(first)
+        reduce(first)
